@@ -14,7 +14,7 @@ const JobListings = ({ isHome = false }) => {
   const userId = auth.currentUser?.uid; // Optional chaining to avoid null checks
   const jobsRef = collection(db, "users", userId, "jobs");
 
-  console.log(userId)
+  console.log(userId);
 
   const mapJobs = () => {
     const filteredJobs = jobs
@@ -63,20 +63,28 @@ const JobListings = ({ isHome = false }) => {
         <h2 className="text-3xl font-bold text-black mb-8 text-center">
           {!isHome ? "Browse Jobs" : "Recently Added Jobs"}
         </h2>
-        {!isHome && (
-          <FilterBar
-            searchJob={searchJob}
-            setSearchJob={setSearchJob}
-            status={status}
-            setStatus={setStatus}
-          />
-        )}
-        {loading ? (
-          <Spinner loading={loading} />
+        {!jobs || jobs.length === 0 ? (
+          <h1 className="text-center text-3xl mt-16">
+            No jobs to track yet. Start adding your job applications!
+          </h1>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {mapJobs()}
-          </div>
+          <>
+            {!isHome && (
+              <FilterBar
+                searchJob={searchJob}
+                setSearchJob={setSearchJob}
+                status={status}
+                setStatus={setStatus}
+              />
+            )}
+            {loading ? (
+              <Spinner loading={loading} />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {mapJobs()}
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
